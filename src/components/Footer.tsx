@@ -46,11 +46,11 @@ export const Footer = () => {
             <ul className="mt-4 space-y-3 md:mt-6 md:space-y-4">
               <li className="flex items-start gap-3 text-sm text-stone-600 dark:text-slate-400">
                 <MapPin className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                <span className="leading-tight">123 Gifting Lane, Suite 101<br />San Francisco, CA 94103</span>
+                <span className="leading-tight">Chuadanga,Boro bazar</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-stone-600 dark:text-slate-400">
                 <Phone className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                <span>+1 (555) 000-0000</span>
+                <span>01833-282575</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-stone-600 dark:text-slate-400">
                 <Mail className="h-5 w-5 shrink-0 text-emerald-600 dark:text-emerald-400" />

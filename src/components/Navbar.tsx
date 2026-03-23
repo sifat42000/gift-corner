@@ -122,7 +122,7 @@ export const Navbar = () => {
                 >
                   <Heart className="h-5 w-5" />
                   {wishlist.length > 0 && (
-                    <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
+                    <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold leading-none text-white">
                       {wishlist.length}
                     </span>
                   )}
@@ -138,7 +138,7 @@ export const Navbar = () => {
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
-                    <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold text-white">
+                    <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold leading-none text-white">
                       {totalItems}
                     </span>
                   )}
