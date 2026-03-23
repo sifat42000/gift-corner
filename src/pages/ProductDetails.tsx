@@ -190,17 +190,21 @@ export const ProductDetails = () => {
               {product.category}
             </span>
             <div className="flex gap-2">
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.9 }}
                 onClick={toggleWishlist}
                 className={`rounded-full p-2.5 shadow-sm transition-all ${
                   isWishlisted ? 'bg-rose-500 text-white' : 'bg-white dark:bg-slate-800 text-stone-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400'
                 }`}
               >
                 <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-current' : ''}`} />
-              </button>
-              <button className="rounded-full bg-white dark:bg-slate-800 p-2.5 text-stone-400 dark:text-slate-500 shadow-sm transition-all hover:text-emerald-600 dark:hover:text-emerald-400">
+              </motion.button>
+              <motion.button 
+                whileTap={{ scale: 0.9 }}
+                className="rounded-full bg-white dark:bg-slate-800 p-2.5 text-stone-400 dark:text-slate-500 shadow-sm transition-all hover:text-emerald-600 dark:hover:text-emerald-400"
+              >
                 <Share2 className="h-5 w-5" />
-              </button>
+              </motion.button>
             </div>
           </div>
 
@@ -211,7 +215,7 @@ export const ProductDetails = () => {
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.rating || 4.9) ? 'fill-current' : 'text-stone-200 dark:text-slate-700'}`} />
               ))}
-              <span className="ml-2 text-sm font-bold text-stone-900 dark:text-white">{product.rating || '4.9'}</span>
+              <span className="ml-2 text-base font-bold text-stone-900 dark:text-white">{product.rating || '4.9'}</span>
             </div>
             <span className="h-4 w-px bg-stone-200 dark:bg-slate-800" />
             <span className="text-sm text-stone-500 dark:text-slate-400">128 Reviews</span>
@@ -221,26 +225,26 @@ export const ProductDetails = () => {
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">${discountedPrice.toFixed(2)}</span>
               {product.discount && (
-                <span className="text-lg text-stone-400 dark:text-slate-600 line-through">${product.price.toFixed(2)}</span>
+                <span className="text-xl text-stone-400 dark:text-slate-600 line-through">${product.price.toFixed(2)}</span>
               )}
             </div>
-            <p className="mt-2 text-sm text-stone-500 dark:text-slate-400">Inclusive of all taxes</p>
+            <p className="mt-2 text-xs text-stone-500 dark:text-slate-400">Inclusive of all taxes</p>
           </div>
 
-          <p className="mb-8 text-stone-600 dark:text-slate-300 leading-relaxed">
+          <p className="mb-8 text-base text-stone-600 dark:text-slate-300 leading-relaxed">
             {product.description}
           </p>
 
           {/* Variants */}
           {product.variants && (
             <div className="mb-8 space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Select Variant</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-stone-900 dark:text-white">Select Variant</h3>
               <div className="flex flex-wrap gap-3">
                 {product.variants.map((v) => (
                   <button
                     key={v}
                     onClick={() => setSelectedVariant(v)}
-                    className={`rounded-xl border-2 px-6 py-3 text-sm font-bold transition-all ${
+                    className={`rounded-xl border-2 px-6 py-3.5 text-sm font-bold transition-all active:scale-95 ${
                       selectedVariant === v
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800'
                         : 'border-stone-100 bg-white text-stone-600 hover:border-stone-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-700'
@@ -256,27 +260,30 @@ export const ProductDetails = () => {
           {/* Actions */}
           <div className="mb-10 flex flex-col gap-4 sm:flex-row">
             <div className="flex items-center rounded-xl border-2 border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-2">
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.8 }}
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="p-3 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white"
               >
                 <Minus className="h-4 w-4" />
-              </button>
+              </motion.button>
               <span className="w-12 text-center font-bold text-stone-900 dark:text-white">{quantity}</span>
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.8 }}
                 onClick={() => setQuantity(quantity + 1)}
                 className="p-3 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white"
               >
                 <Plus className="h-4 w-4" />
-              </button>
+              </motion.button>
             </div>
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.98 }}
               onClick={handleAddToCart}
               className="flex flex-1 items-center justify-center gap-3 rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none transition-all hover:bg-emerald-700 hover:shadow-none"
             >
               <ShoppingBag className="h-5 w-5" />
               Add to Cart
-            </button>
+            </motion.button>
           </div>
 
           {/* Features */}
@@ -304,17 +311,17 @@ export const ProductDetails = () => {
       </div>
 
       {/* Sticky Mobile Footer */}
-      <div className="fixed bottom-0 left-0 z-40 w-full border-t border-stone-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 p-4 backdrop-blur-lg lg:hidden">
-        <div className="flex items-center gap-4">
+      <div className="fixed bottom-0 left-0 z-40 w-full border-t border-stone-100 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 p-4 pb-safe backdrop-blur-xl lg:hidden">
+        <div className="mx-auto max-w-md flex items-center gap-4">
           <div className="flex-1">
-            <p className="text-xs font-medium text-stone-500 dark:text-slate-400">Total Price</p>
-            <p className="text-lg font-bold text-stone-900 dark:text-white">${(discountedPrice * quantity).toFixed(2)}</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Total Price</p>
+            <p className="text-xl font-bold text-stone-900 dark:text-white">${(discountedPrice * quantity).toFixed(2)}</p>
           </div>
           <button 
             onClick={handleAddToCart}
-            className="flex flex-[2] items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none"
+            className="flex flex-[2] items-center justify-center gap-3 rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none active:scale-95"
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingBag className="h-5 w-5" />
             Add to Cart
           </button>
         </div>

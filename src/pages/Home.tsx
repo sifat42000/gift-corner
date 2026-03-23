@@ -15,9 +15,9 @@ export const Home = () => {
   ], []);
 
   const categories = useMemo(() => [
-    { name: 'Eid Collection', image: 'https://images.unsplash.com/photo-1564182842-76429398d68e?auto=format&fit=crop&q=80&w=800', href: '/categories/eid' },
-    { name: 'Birthday Gifts', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800', href: '/categories/birthday' },
-    { name: 'Anniversary', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800', href: '/categories/anniversary' },
+    { name: 'Eid Collection', image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800', href: '/categories?occasion=Eid' },
+    { name: 'Birthday Gifts', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=800', href: '/categories?occasion=Birthday' },
+    { name: 'Anniversary', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800', href: '/categories?occasion=Anniversary' },
   ], []);
 
   const reviews = useMemo(() => [
@@ -27,9 +27,9 @@ export const Home = () => {
   ], []);
 
   return (
-    <div className="space-y-16 py-12 md:space-y-32 md:py-0 overflow-hidden transition-colors duration-300">
+    <div className="space-y-16 pb-16 md:space-y-32 md:pb-24 overflow-hidden transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[400px] md:h-[85vh] md:min-h-[700px] overflow-hidden bg-stone-900">
+      <section className="relative min-h-[60vh] flex items-center md:min-h-[85vh] overflow-hidden bg-stone-900">
         <motion.img 
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.7 }}
@@ -41,30 +41,34 @@ export const Home = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-stone-900/90 via-stone-900/50 to-transparent md:from-stone-900/80" />
         
-        <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-2xl space-y-4 md:space-y-8"
+            className="max-w-2xl space-y-6 md:space-y-10"
           >
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-[10px] font-semibold text-emerald-400 backdrop-blur-md md:px-4 md:py-2 md:text-sm">
-              <Sparkles className="h-3 w-3 md:h-4 w-4" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-400 backdrop-blur-md md:px-4 md:py-2 md:text-sm">
+              <Sparkles className="h-3.5 w-3.5 md:h-4 w-4" />
               <span>New Eid Collection is Here</span>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-6xl md:text-8xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl md:text-8xl leading-[1.1]">
               Celebrate with <span className="text-emerald-400">Thoughtful</span> Gifts
             </h1>
-            <p className="text-sm text-stone-300 leading-relaxed md:text-xl">
+            <p className="text-base text-stone-300 leading-relaxed md:text-xl max-w-xl">
               Discover our curated collections for Eid, Birthdays, and every special moment in between. We deliver joy right to their doorstep.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 pt-2 md:gap-4 md:pt-4">
-              <Link to="/categories" className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-emerald-700 hover:scale-105 active:scale-95 md:px-10 md:py-5 md:text-lg">
-                Shop Collection <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-              </Link>
-              <Link to="/categories" className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-md transition-all hover:bg-white/20 md:px-10 md:py-5 md:text-lg">
-                View Offers
-              </Link>
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 md:gap-6 md:pt-4">
+              <motion.div whileTap={{ scale: 0.95 }}>
+                <Link to="/categories" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-base font-bold text-white transition-all hover:bg-emerald-700 hover:scale-105 md:px-10 md:py-5 md:text-lg">
+                  Shop Collection <ArrowRight className="h-5 w-5" />
+                </Link>
+              </motion.div>
+              <motion.div whileTap={{ scale: 0.95 }}>
+                <Link to="/categories" className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/30 bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur-md transition-all hover:bg-white/20 md:px-10 md:py-5 md:text-lg">
+                  View Offers
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -82,9 +86,10 @@ export const Home = () => {
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5, scale: 1.02 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="flex items-center gap-4 rounded-2xl bg-stone-50 p-6 border border-stone-100 dark:bg-slate-900 dark:border-slate-800 md:gap-6 md:p-8"
+              className="flex items-center gap-4 rounded-2xl bg-stone-50 p-6 border border-stone-100 dark:bg-slate-900 dark:border-slate-800 md:gap-6 md:p-8 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800 md:p-4">
                 <item.icon className="h-6 w-6 text-emerald-600 md:h-8 md:w-8" />
@@ -147,20 +152,23 @@ export const Home = () => {
           </div>
           <div className="relative z-10 max-w-3xl mx-auto space-y-6 md:space-y-8">
             <h2 className="text-3xl font-bold sm:text-5xl md:text-6xl">Save 20% on your first order!</h2>
-            <p className="text-base text-emerald-50 md:text-xl">
+            <p className="text-lg text-emerald-50 md:text-xl">
               Join our community today and get exclusive access to new collections and special offers.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 md:gap-4 md:pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 md:gap-6 md:pt-6">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
                 className="w-full sm:w-80 rounded-full border-none bg-white px-6 py-4 text-stone-900 focus:ring-4 focus:ring-emerald-400/50 outline-none dark:bg-slate-900 dark:text-white md:px-8 md:py-5"
               />
-              <button className="w-full sm:w-auto rounded-full bg-stone-900 px-8 py-4 font-bold text-white transition-all hover:bg-stone-800 active:scale-95 dark:bg-black dark:hover:bg-slate-950 md:px-10 md:py-5">
+              <motion.button 
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto rounded-full bg-stone-900 px-8 py-4 font-bold text-white transition-all hover:bg-stone-800 dark:bg-black dark:hover:bg-slate-950 md:px-10 md:py-5"
+              >
                 Get Discount
-              </button>
+              </motion.button>
             </div>
-            <p className="text-[10px] text-emerald-200 uppercase tracking-widest md:text-sm md:normal-case md:tracking-normal">
+            <p className="text-xs text-emerald-200 uppercase tracking-widest md:text-sm md:normal-case md:tracking-normal">
               * Offer valid for new customers only. Terms and conditions apply.
             </p>
           </div>

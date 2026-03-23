@@ -34,7 +34,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = memo(({ name, review, ratin
             {Array.from({ length: 5 }).map((_, i) => (
               <Star 
                 key={i} 
-                className={`h-2.5 w-2.5 ${i < rating ? 'fill-current' : 'text-stone-200 dark:text-slate-800'} md:h-3 md:w-3`} 
+                className={`h-3 w-3 ${i < rating ? 'fill-current' : 'text-stone-200 dark:text-slate-800'} md:h-3.5 md:w-3.5`} 
               />
             ))}
           </div>

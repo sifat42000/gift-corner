@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Filter, X, ChevronDown, Star } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Filter, X, ChevronDown, Star, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ProductCard } from '../components/ProductCard';
 import { Product } from '../types';
 import { ProductSkeleton } from '../components/Skeleton';
 
 export const Categories = () => {
+  const [searchParams] = useSearchParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [priceRange, setPriceRange] = useState(200);
@@ -13,7 +15,59 @@ export const Categories = () => {
   const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Temporary states for mobile filter drawer
+  const [tempPriceRange, setTempPriceRange] = useState(priceRange);
+  const [tempOccasions, setTempOccasions] = useState<string[]>(selectedOccasions);
+  const [tempGenders, setTempGenders] = useState<string[]>(selectedGenders);
+  const [tempRating, setTempRating] = useState<number | null>(selectedRating);
+
+  // Sync temp states when drawer opens
+  useEffect(() => {
+    if (isSidebarOpen) {
+      setTempPriceRange(priceRange);
+      setTempOccasions(selectedOccasions);
+      setTempGenders(selectedGenders);
+      setTempRating(selectedRating);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSidebarOpen, priceRange, selectedOccasions, selectedGenders, selectedRating]);
+
+  const handleApplyFilters = () => {
+    setPriceRange(tempPriceRange);
+    setSelectedOccasions(tempOccasions);
+    setSelectedGenders(tempGenders);
+    setSelectedRating(tempRating);
+    setIsSidebarOpen(false);
+    setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    setTempPriceRange(200);
+    setTempOccasions([]);
+    setTempGenders([]);
+    setTempRating(null);
+  };
+
+  // Handle query parameters on mount
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    const occ = searchParams.get('occasion');
+
+    if (cat) {
+      setSelectedCategory(cat);
+    }
+    if (occ) {
+      setSelectedOccasions([occ]);
+    }
+  }, [searchParams]);
 
   const MOCK_PRODUCTS = useMemo<Product[]>(() => [
     { id: '1', name: 'Premium Eid Gift Box', description: 'A curated selection of artisanal treats.', price: 89.99, image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800', category: 'Eid Special', occasion: 'Eid', gender: 'Unisex', discount: 15, rating: 4.9 },
@@ -45,10 +99,10 @@ export const Categories = () => {
     setLoading(true);
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
-  }, [selectedCategory, priceRange, selectedOccasions, selectedGenders, selectedRating, currentPage]);
+  }, [selectedCategory, priceRange, selectedOccasions, selectedGenders, selectedRating, sortBy, currentPage]);
 
   const filteredProducts = useMemo(() => {
-    return MOCK_PRODUCTS.filter(p => {
+    let result = MOCK_PRODUCTS.filter(p => {
       const categoryMatch = selectedCategory === 'All' || p.category === selectedCategory;
       const priceMatch = p.price <= priceRange;
       const occasionMatch = selectedOccasions.length === 0 || (p.occasion && selectedOccasions.includes(p.occasion));
@@ -57,7 +111,25 @@ export const Categories = () => {
       
       return categoryMatch && priceMatch && occasionMatch && genderMatch && ratingMatch;
     });
-  }, [selectedCategory, priceRange, selectedOccasions, selectedGenders, selectedRating, MOCK_PRODUCTS]);
+
+    switch (sortBy) {
+      case 'price-low':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      case 'newest':
+      default:
+        // Original order
+        break;
+    }
+
+    return result;
+  }, [selectedCategory, priceRange, selectedOccasions, selectedGenders, selectedRating, sortBy, MOCK_PRODUCTS]);
 
   const itemsPerPage = 6;
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -67,17 +139,15 @@ export const Categories = () => {
   }, [filteredProducts, currentPage]);
 
   const toggleOccasion = (occ: string) => {
-    setSelectedOccasions(prev => 
+    setTempOccasions(prev => 
       prev.includes(occ) ? prev.filter(o => o !== occ) : [...prev, occ]
     );
-    setCurrentPage(1);
   };
 
   const toggleGender = (gender: string) => {
-    setSelectedGenders(prev => 
+    setTempGenders(prev => 
       prev.includes(gender) ? prev.filter(g => g !== gender) : [...prev, gender]
     );
-    setCurrentPage(1);
   };
 
   const clearFilters = () => {
@@ -86,191 +156,329 @@ export const Categories = () => {
     setSelectedOccasions([]);
     setSelectedGenders([]);
     setSelectedRating(null);
+    setSortBy('newest');
     setCurrentPage(1);
   };
+
+  // Live count for filters in drawer
+  const tempFilteredCount = useMemo(() => {
+    return MOCK_PRODUCTS.filter(p => {
+      const categoryMatch = selectedCategory === 'All' || p.category === selectedCategory;
+      const priceMatch = p.price <= tempPriceRange;
+      const occasionMatch = tempOccasions.length === 0 || (p.occasion && tempOccasions.includes(p.occasion));
+      const genderMatch = tempGenders.length === 0 || (p.gender && tempGenders.includes(p.gender));
+      const ratingMatch = tempRating === null || (p.rating || 0) >= (tempRating || 0);
+      
+      return categoryMatch && priceMatch && occasionMatch && genderMatch && ratingMatch;
+    }).length;
+  }, [selectedCategory, tempPriceRange, tempOccasions, tempGenders, tempRating, MOCK_PRODUCTS]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 transition-colors duration-300">
       {/* Category Horizontal List */}
-      <div className="mb-8 flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => {
-              setSelectedCategory(cat);
-              setCurrentPage(1);
-            }}
-            className={`whitespace-nowrap rounded-full px-6 py-2 text-sm font-medium transition-all ${
-              selectedCategory === cat
-                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 dark:shadow-emerald-900/20'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
-            }`}
+      <div className="relative mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="flex items-center justify-between mb-4 lg:hidden">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Categories</h3>
+          <motion.span 
+            animate={{ x: [0, 4, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-tighter text-emerald-600 dark:text-emerald-400"
           >
-            {cat}
-          </button>
-        ))}
+            Swipe to explore <ChevronRight className="h-3 w-3" />
+          </motion.span>
+        </div>
+        <div className="relative">
+          {/* Left Gradient Mask */}
+          <div className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-gradient-to-r from-white via-white/40 to-transparent pointer-events-none dark:from-slate-950 dark:via-slate-950/40 lg:hidden" />
+          
+          <div className="flex flex-nowrap items-center gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth touch-pan-x">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setCurrentPage(1);
+                }}
+                className={`whitespace-nowrap rounded-full px-6 py-3 text-sm font-bold transition-all active:scale-95 ${
+                  selectedCategory === cat
+                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 dark:shadow-emerald-900/20'
+                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Right Gradient Mask */}
+          <div className="absolute right-0 top-0 bottom-0 z-10 w-12 bg-gradient-to-l from-white via-white/40 to-transparent pointer-events-none dark:from-slate-950 dark:via-slate-950/40 lg:hidden" />
+        </div>
       </div>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Mobile Filter Toggle */}
-        <div className="sticky top-16 z-30 -mx-4 flex items-center justify-between bg-white/80 px-4 py-3 backdrop-blur-md dark:bg-slate-950/80 lg:hidden">
-          <h2 className="text-lg font-bold text-stone-900 dark:text-white">Products</h2>
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-bold text-stone-600 shadow-sm transition-all active:scale-95 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
-          >
-            <Filter className="h-4 w-4" /> Filters
-          </button>
+      <div className="flex flex-col gap-8">
+        {/* Mobile/Desktop Filter Toggle */}
+        <div className="sticky top-16 z-30 -mx-4 flex flex-col gap-4 bg-white/80 px-4 py-4 backdrop-blur-md dark:bg-slate-950/80 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center justify-between md:justify-start md:gap-4">
+            <h2 className="text-lg font-bold text-stone-900 dark:text-white">Products</h2>
+            <span className="text-xs text-stone-500 dark:text-slate-400 md:hidden">
+              {filteredProducts.length} items
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className={`flex-1 md:flex-none flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold transition-all active:scale-95 ${
+                isSidebarOpen 
+                  ? 'border-emerald-600 bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' 
+                  : 'border-stone-200 bg-white text-stone-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400'
+              }`}
+            >
+              <Filter className="h-4 w-4" /> Filters
+            </button>
+
+            <div className="relative flex-1 md:flex-none">
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full appearance-none rounded-xl border border-stone-200 bg-white px-4 py-2.5 pr-10 text-sm font-bold text-stone-600 shadow-sm focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
+              >
+                <option value="newest">Newest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 pointer-events-none text-stone-400" />
+            </div>
+          </div>
         </div>
 
-        {/* Sidebar Filter */}
-        <aside className={`fixed inset-0 z-50 transform bg-white transition-transform duration-300 dark:bg-slate-950 lg:relative lg:inset-auto lg:z-0 lg:w-64 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="flex h-full flex-col p-6 lg:p-0 overflow-y-auto no-scrollbar">
-            <div className="mb-6 flex items-center justify-between lg:hidden">
-              <h2 className="text-xl font-bold text-stone-900 dark:text-white">Filters</h2>
-              <button onClick={() => setIsSidebarOpen(false)}>
-                <X className="h-6 w-6 text-stone-500 dark:text-slate-400" />
-              </button>
-            </div>
+        {/* Filter UI (Drawer) */}
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <>
+              {/* Dimmed Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsSidebarOpen(false)}
+                className="fixed inset-0 z-[60] bg-stone-900/40 backdrop-blur-sm dark:bg-black/60"
+              />
 
-            <div className="space-y-8">
-              {/* Price Range */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Price Range</h3>
-                <div className="space-y-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={priceRange}
-                    onChange={(e) => {
-                      setPriceRange(parseInt(e.target.value));
-                      setCurrentPage(1);
-                    }}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-stone-200 accent-emerald-600 dark:bg-slate-800"
-                  />
-                  <div className="flex justify-between text-sm text-stone-500 dark:text-slate-400">
-                    <span>$0</span>
-                    <span>Up to ${priceRange}</span>
+              {/* Bottom Sheet (Mobile) / Right Drawer (Desktop) */}
+              <motion.div
+                initial={{ y: '100%', x: '100%' }}
+                animate={{ 
+                  y: window.innerWidth < 768 ? 0 : 0, 
+                  x: window.innerWidth < 768 ? 0 : 0,
+                  transition: { type: 'spring', damping: 30, stiffness: 300, mass: 0.8 }
+                }}
+                exit={{ 
+                  y: window.innerWidth < 768 ? '100%' : 0,
+                  x: window.innerWidth < 768 ? 0 : '100%'
+                }}
+                className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[90vh] flex-col rounded-t-[2.5rem] bg-white shadow-2xl dark:bg-slate-950 md:inset-x-auto md:inset-y-0 md:right-0 md:h-full md:w-96 md:rounded-none md:rounded-l-[2.5rem]"
+              >
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between border-b border-stone-100 p-6 dark:border-slate-800 md:p-8">
+                  <div>
+                    <h2 className="text-xl font-bold text-stone-900 dark:text-white md:text-2xl">Filters</h2>
+                    <p className="text-xs text-stone-500 dark:text-slate-500">Refine your category search</p>
                   </div>
-                </div>
-              </div>
-
-              {/* Occasion */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Occasion</h3>
-                <div className="space-y-2">
-                  {OCCASIONS.map((occ) => (
-                    <label key={occ} className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        checked={selectedOccasions.includes(occ)}
-                        onChange={() => toggleOccasion(occ)}
-                        className="h-4 w-4 rounded border-stone-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800" 
-                      />
-                      <span className="text-sm text-stone-600 group-hover:text-stone-900 dark:text-slate-400 dark:group-hover:text-white">{occ}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Gender */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Gender</h3>
-                <div className="space-y-2">
-                  {GENDERS.map((gender) => (
-                    <label key={gender} className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        checked={selectedGenders.includes(gender)}
-                        onChange={() => toggleGender(gender)}
-                        className="h-4 w-4 rounded border-stone-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800" 
-                      />
-                      <span className="text-sm text-stone-600 group-hover:text-stone-900 dark:text-slate-400 dark:group-hover:text-white">{gender}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Rating */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Rating</h3>
-                <div className="space-y-2">
-                  {RATINGS.map((rating) => (
-                    <label key={rating} className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="radio" 
-                        name="rating"
-                        checked={selectedRating === rating}
-                        onChange={() => {
-                          setSelectedRating(rating);
-                          setCurrentPage(1);
-                        }}
-                        className="h-4 w-4 rounded-full border-stone-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800" 
-                      />
-                      <div className="flex items-center gap-1 text-amber-500">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className={`h-3 w-3 ${i < rating ? 'fill-current' : 'text-stone-200 dark:text-slate-800'}`} />
-                        ))}
-                        <span className="ml-1 text-xs text-stone-500 dark:text-slate-400">& Up</span>
-                      </div>
-                    </label>
-                  ))}
                   <button 
-                    onClick={() => {
-                      setSelectedRating(null);
-                      setCurrentPage(1);
-                    }}
-                    className="text-xs text-emerald-600 hover:underline dark:text-emerald-400"
+                    onClick={() => setIsSidebarOpen(false)}
+                    className="rounded-full bg-stone-50 p-2 text-stone-400 hover:bg-stone-100 dark:bg-slate-900 dark:text-slate-500 dark:hover:bg-slate-800"
                   >
-                    Clear rating
+                    <X className="h-6 w-6" />
                   </button>
                 </div>
-              </div>
-            </div>
 
-            <button 
-              onClick={() => setIsSidebarOpen(false)}
-              className="mt-8 w-full rounded-xl bg-stone-900 py-4 text-sm font-bold text-white transition-all hover:bg-stone-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 lg:hidden"
-            >
-              Apply Filters
-            </button>
-          </div>
-        </aside>
+                {/* Drawer Body - Scrollable */}
+                <div className="flex-1 overflow-y-auto p-6 no-scrollbar md:p-8">
+                  <div className="space-y-10">
+                    {/* Price Range */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Price Range</h3>
+                        <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">${tempPriceRange}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max="200"
+                        value={tempPriceRange}
+                        onChange={(e) => setTempPriceRange(parseInt(e.target.value))}
+                        className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-stone-100 accent-emerald-600 dark:bg-slate-800"
+                      />
+                      <div className="flex justify-between text-[10px] font-bold text-stone-400 dark:text-slate-600">
+                        <span>$0</span>
+                        <span>$200+</span>
+                      </div>
+                    </div>
 
-        {/* Product Grid */}
+                    {/* Occasion */}
+                    <div className="space-y-4">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Occasion</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {OCCASIONS.map((occ) => (
+                          <button
+                            key={occ}
+                            onClick={() => toggleOccasion(occ)}
+                            className={`flex items-center justify-between rounded-xl border p-3 text-sm font-medium transition-all active:scale-95 ${
+                              tempOccasions.includes(occ)
+                                ? 'border-emerald-600 bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400'
+                                : 'border-stone-100 bg-stone-50 text-stone-600 hover:border-stone-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-700'
+                            }`}
+                          >
+                            {occ}
+                            {tempOccasions.includes(occ) && <div className="h-1.5 w-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Gender */}
+                    <div className="space-y-4">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Gender</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {GENDERS.map((gender) => (
+                          <button
+                            key={gender}
+                            onClick={() => toggleGender(gender)}
+                            className={`flex items-center justify-between rounded-xl border p-3 text-sm font-medium transition-all active:scale-95 ${
+                              tempGenders.includes(gender)
+                                ? 'border-emerald-600 bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400'
+                                : 'border-stone-100 bg-stone-50 text-stone-600 hover:border-stone-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-700'
+                            }`}
+                          >
+                            {gender}
+                            {tempGenders.includes(gender) && <div className="h-1.5 w-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="space-y-4">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Rating</h3>
+                      <div className="grid grid-cols-4 gap-2">
+                        {[0, 3, 4, 4.5].map((rating) => (
+                          <button
+                            key={rating}
+                            onClick={() => setTempRating(rating === 0 ? null : rating)}
+                            className={`flex flex-col items-center gap-1 rounded-2xl p-3 text-xs font-bold transition-all active:scale-95 ${
+                              (rating === 0 && tempRating === null) || (tempRating === rating)
+                                ? 'bg-amber-50 text-amber-600 border border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800' 
+                                : 'bg-stone-50 text-stone-400 border border-transparent dark:bg-slate-900 dark:text-slate-500'
+                            }`}
+                          >
+                            {rating === 0 ? (
+                              <>
+                                <Filter className="h-4 w-4" />
+                                <span>Any</span>
+                              </>
+                            ) : (
+                              <>
+                                <Star className={`h-4 w-4 ${(tempRating === rating) ? 'fill-amber-500' : ''}`} />
+                                <span>{rating}+</span>
+                              </>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Drawer Footer - Actions */}
+                <div className="grid grid-cols-2 gap-4 border-t border-stone-100 p-6 dark:border-slate-800 md:p-8">
+                  <button
+                    onClick={handleResetFilters}
+                    className="rounded-2xl border border-stone-200 py-4 text-sm font-bold text-stone-600 transition-all hover:bg-stone-50 active:scale-95 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-900"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    onClick={handleApplyFilters}
+                    className="rounded-2xl bg-emerald-600 py-4 text-sm font-bold text-white shadow-xl shadow-emerald-200 transition-all hover:bg-emerald-700 active:scale-95 dark:shadow-none"
+                  >
+                    Show {tempFilteredCount} Results
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Product Grid Area */}
         <div className="flex-1">
-          <div className="mb-6 hidden items-center justify-between lg:flex">
+          <div className="mb-6 hidden items-center justify-between md:flex">
             <h2 className="text-2xl font-bold text-stone-900 dark:text-white">
               {selectedCategory === 'All' ? 'All Products' : selectedCategory}
             </h2>
             <div className="flex items-center gap-2 text-sm text-stone-500 dark:text-slate-400">
               <span>Showing {paginatedProducts.length} of {filteredProducts.length} products</span>
               <div className="h-4 w-px bg-stone-200 mx-2 dark:bg-slate-800" />
-              <button className="flex items-center gap-1 font-medium text-stone-900 dark:text-white">
-                Sort by: Newest <ChevronDown className="h-4 w-4" />
-              </button>
+              <div className="relative">
+                <select 
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="appearance-none bg-transparent pr-6 font-medium text-stone-900 focus:outline-none dark:text-white cursor-pointer"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Top Rated</option>
+                </select>
+                <ChevronDown className="absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 pointer-events-none text-stone-400" />
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-            {loading ? (
-              Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
-            ) : paginatedProducts.length > 0 ? (
-              paginatedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : (
-              <div className="col-span-full py-20 text-center">
-                <p className="text-stone-500 dark:text-slate-400">No products found matching your filters.</p>
-                <button 
-                  onClick={clearFilters}
-                  className="mt-4 text-sm font-bold text-emerald-600 hover:underline dark:text-emerald-400"
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {loading ? (
+                Array.from({ length: 6 }).map((_, i) => (
+                  <motion.div
+                    key={`skeleton-${i}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ProductSkeleton />
+                  </motion.div>
+                ))
+              ) : paginatedProducts.length > 0 ? (
+                paginatedProducts.map((product) => (
+                  <motion.div
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="col-span-full py-20 text-center"
                 >
-                  Clear all filters
-                </button>
-              </div>
-            )}
+                  <p className="text-stone-500 dark:text-slate-400">No products found matching your filters.</p>
+                  <button 
+                    onClick={clearFilters}
+                    className="mt-4 text-sm font-bold text-emerald-600 hover:underline dark:text-emerald-400"
+                  >
+                    Clear all filters
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Pagination */}
@@ -300,18 +508,6 @@ export const Categories = () => {
         </div>
       </div>
 
-      {/* Mobile Overlay */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsSidebarOpen(false)}
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };

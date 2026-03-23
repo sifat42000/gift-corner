@@ -12,9 +12,11 @@ interface SkeletonProps {
 export const Skeleton: React.FC<SkeletonProps> = ({ className = '' }) => {
   return (
     <div 
-      className={`animate-pulse rounded-xl bg-stone-100 dark:bg-slate-800 ${className}`}
+      className={`relative overflow-hidden rounded-xl bg-stone-100 dark:bg-slate-800 ${className}`}
       aria-hidden="true"
-    />
+    >
+      <div className="absolute inset-0 animate-shimmer" />
+    </div>
   );
 };
 

@@ -17,13 +17,13 @@ export const Footer = () => {
               Curating the world's most unique and thoughtful gifts for every occasion. Making memories one gift at a time.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-2 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
+              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-3 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-2 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
+              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-3 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-2 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
+              <a href="#" className="rounded-full bg-white dark:bg-slate-900 p-3 text-stone-400 dark:text-slate-500 shadow-sm transition-colors hover:text-emerald-600 dark:hover:text-emerald-400">
                 <Facebook className="h-5 w-5" />
               </a>
             </div>

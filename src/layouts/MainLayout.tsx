@@ -15,6 +15,7 @@ export const MainLayout = () => {
       <ScrollToTop />
       <Toaster 
         position="top-center"
+        containerStyle={{ zIndex: 9999 }}
         toastOptions={{
           className: 'rounded-2xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-sm font-medium text-stone-900 dark:text-white shadow-xl',
           duration: 3000,
