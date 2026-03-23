@@ -26,11 +26,6 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
     addToCart(product);
     toast.success(`${product.name} added to cart!`, {
       icon: '🛍️',
-      style: {
-        borderRadius: '1rem',
-        background: '#fff',
-        color: '#065f46',
-      },
     });
   };
 

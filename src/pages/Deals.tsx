@@ -28,7 +28,7 @@ export const Deals = () => {
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl bg-emerald-600 px-8 py-12 text-white shadow-2xl shadow-emerald-200"
+        className="relative overflow-hidden rounded-3xl bg-emerald-600 px-8 py-12 text-white shadow-2xl shadow-emerald-200 dark:shadow-none"
       >
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1 text-sm font-bold backdrop-blur-md">
@@ -45,9 +45,9 @@ export const Deals = () => {
 
       <div className="mt-16">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-stone-900">Flash Sale Items</h2>
-          <div className="flex items-center gap-2 text-sm font-bold text-emerald-600">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600" />
+          <h2 className="text-2xl font-bold text-stone-900 dark:text-white">Flash Sale Items</h2>
+          <div className="flex items-center gap-2 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600 dark:bg-emerald-400" />
             Live Now
           </div>
         </div>

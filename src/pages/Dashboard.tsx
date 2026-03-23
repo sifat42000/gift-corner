@@ -140,12 +140,12 @@ export const Dashboard = () => {
         </div>
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <div className="space-y-2 rounded-3xl border border-stone-100 bg-white p-2 shadow-sm">
+            <div className="space-y-2 rounded-3xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-sm">
               {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-10 w-full rounded-2xl" />)}
             </div>
           </div>
           <div className="lg:col-span-3">
-            <div className="rounded-3xl border border-stone-100 bg-white p-8 shadow-sm">
+            <div className="rounded-3xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm">
               <DashboardSkeleton />
             </div>
           </div>
@@ -157,14 +157,14 @@ export const Dashboard = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-stone-900">My Account</h1>
-        <p className="text-stone-500">Manage your profile, orders, and preferences</p>
+        <h1 className="text-3xl font-bold text-stone-900 dark:text-white">My Account</h1>
+        <p className="text-stone-500 dark:text-slate-400">Manage your profile, orders, and preferences</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-4">
         {/* Sidebar Navigation */}
         <div className="lg:col-span-1">
-          <div className="flex flex-col gap-1 rounded-3xl border border-stone-100 bg-white p-2 shadow-sm">
+          <div className="flex flex-col gap-1 rounded-3xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-sm">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -173,8 +173,8 @@ export const Dashboard = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all ${
                     activeTab === tab.id 
-                      ? 'bg-emerald-50 text-emerald-600' 
-                      : 'text-stone-600 hover:bg-stone-50 hover:text-stone-900'
+                      ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' 
+                      : 'text-stone-600 dark:text-slate-400 hover:bg-stone-50 dark:hover:bg-slate-800 hover:text-stone-900 dark:hover:text-white'
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -182,7 +182,7 @@ export const Dashboard = () => {
                   {activeTab === tab.id && (
                     <motion.div 
                       layoutId="activeTab"
-                      className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-600"
+                      className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400"
                     />
                   )}
                 </button>
@@ -200,39 +200,39 @@ export const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="rounded-3xl border border-stone-100 bg-white p-8 shadow-sm"
+              className="rounded-3xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm"
             >
               {activeTab === 'profile' && (
                 <div className="space-y-8">
                   <div className="flex items-center gap-6">
-                    <div className="h-24 w-24 overflow-hidden rounded-3xl bg-stone-100">
+                    <div className="h-24 w-24 overflow-hidden rounded-3xl bg-stone-100 dark:bg-slate-800">
                       {user?.photoURL ? (
                         <img src={user.photoURL} alt={user.displayName || 'User'} className="h-full w-full object-cover" />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-emerald-100 text-3xl font-bold text-emerald-600">
+                        <div className="flex h-full w-full items-center justify-center bg-emerald-100 dark:bg-emerald-900/20 text-3xl font-bold text-emerald-600 dark:text-emerald-400">
                           {user?.email?.[0].toUpperCase()}
                         </div>
                       )}
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-stone-900">{user?.displayName || 'User'}</h2>
-                      <p className="text-stone-500">{user?.email}</p>
-                      <button className="mt-2 text-sm font-bold text-emerald-600 hover:underline">Edit Profile</button>
+                      <h2 className="text-xl font-bold text-stone-900 dark:text-white">{user?.displayName || 'User'}</h2>
+                      <p className="text-stone-500 dark:text-slate-400">{user?.email}</p>
+                      <button className="mt-2 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Edit Profile</button>
                     </div>
                   </div>
 
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Full Name</label>
-                      <p className="rounded-xl border border-stone-100 bg-stone-50 p-3 text-stone-900">{user?.displayName || 'Not set'}</p>
+                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Full Name</label>
+                      <p className="rounded-xl border border-stone-100 dark:border-slate-800 bg-stone-50 dark:bg-slate-950 p-3 text-stone-900 dark:text-white">{user?.displayName || 'Not set'}</p>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Email Address</label>
-                      <p className="rounded-xl border border-stone-100 bg-stone-50 p-3 text-stone-900">{user?.email}</p>
+                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Email Address</label>
+                      <p className="rounded-xl border border-stone-100 dark:border-slate-800 bg-stone-50 dark:bg-slate-950 p-3 text-stone-900 dark:text-white">{user?.email}</p>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Phone Number</label>
-                      <p className="rounded-xl border border-stone-100 bg-stone-50 p-3 text-stone-900">{userProfile?.phoneNumber || 'Not set'}</p>
+                      <label className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Phone Number</label>
+                      <p className="rounded-xl border border-stone-100 dark:border-slate-800 bg-stone-50 dark:bg-slate-950 p-3 text-stone-900 dark:text-white">{userProfile?.phoneNumber || 'Not set'}</p>
                     </div>
                   </div>
                 </div>
@@ -241,28 +241,28 @@ export const Dashboard = () => {
               {activeTab === 'orders' && (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-stone-900">Order History</h2>
-                    <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-600">{orders.length} Orders</span>
+                    <h2 className="text-xl font-bold text-stone-900 dark:text-white">Order History</h2>
+                    <span className="rounded-full bg-stone-100 dark:bg-slate-800 px-3 py-1 text-xs font-bold text-stone-600 dark:text-slate-400">{orders.length} Orders</span>
                   </div>
 
                   {orders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                      <div className="mb-4 rounded-full bg-stone-50 p-4">
-                        <Package className="h-8 w-8 text-stone-300" />
+                      <div className="mb-4 rounded-full bg-stone-50 dark:bg-slate-950 p-4">
+                        <Package className="h-8 w-8 text-stone-300 dark:text-slate-700" />
                       </div>
-                      <p className="text-stone-500">You haven't placed any orders yet.</p>
-                      <button className="mt-4 font-bold text-emerald-600 hover:underline">Start Shopping</button>
+                      <p className="text-stone-500 dark:text-slate-400">You haven't placed any orders yet.</p>
+                      <button className="mt-4 font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Start Shopping</button>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {orders.map((order) => (
-                        <div key={order.id} className="rounded-2xl border border-stone-100 p-6 transition-all hover:border-emerald-100 hover:bg-emerald-50/10">
+                        <div key={order.id} className="rounded-2xl border border-stone-100 dark:border-slate-800 p-6 transition-all hover:border-emerald-100 dark:hover:border-emerald-900/50 hover:bg-emerald-50/10 dark:hover:bg-emerald-900/5">
                           <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
                             <div>
-                              <p className="text-xs font-bold uppercase tracking-widest text-stone-400">Order #{order.id.slice(0, 8)}</p>
-                              <p className="text-sm text-stone-500">{new Date(order.createdAt?.toDate()).toLocaleDateString()}</p>
+                              <p className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Order #{order.id.slice(0, 8)}</p>
+                              <p className="text-sm text-stone-500 dark:text-slate-400">{new Date(order.createdAt?.toDate()).toLocaleDateString()}</p>
                             </div>
-                            <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold shadow-sm">
+                            <div className="flex items-center gap-2 rounded-full bg-white dark:bg-slate-800 px-3 py-1 text-xs font-bold shadow-sm dark:text-white">
                               {order.status === 'delivered' && <CheckCircle2 className="h-3 w-3 text-emerald-500" />}
                               {order.status === 'processing' && <Clock className="h-3 w-3 text-amber-500" />}
                               {order.status === 'shipped' && <Truck className="h-3 w-3 text-blue-500" />}
@@ -276,20 +276,20 @@ export const Dashboard = () => {
                                   key={i} 
                                   src={item.image} 
                                   alt={item.name} 
-                                  className="h-10 w-10 rounded-full border-2 border-white object-cover" 
+                                  className="h-10 w-10 rounded-full border-2 border-white dark:border-slate-900 object-cover" 
                                 />
                               ))}
                               {order.items.length > 3 && (
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-stone-100 text-[10px] font-bold text-stone-600">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white dark:border-slate-900 bg-stone-100 dark:bg-slate-800 text-[10px] font-bold text-stone-600 dark:text-slate-400">
                                   +{order.items.length - 3}
                                 </div>
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm font-bold text-stone-900">${order.totalAmount.toFixed(2)}</p>
-                              <p className="text-xs text-stone-500">{order.items.length} items</p>
+                              <p className="text-sm font-bold text-stone-900 dark:text-white">${order.totalAmount.toFixed(2)}</p>
+                              <p className="text-xs text-stone-500 dark:text-slate-400">{order.items.length} items</p>
                             </div>
-                            <button className="rounded-xl bg-stone-50 p-2 text-stone-400 transition-colors hover:bg-emerald-100 hover:text-emerald-600">
+                            <button className="rounded-xl bg-stone-50 dark:bg-slate-800 p-2 text-stone-400 dark:text-slate-500 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400">
                               <ChevronRight className="h-5 w-5" />
                             </button>
                           </div>
@@ -303,30 +303,30 @@ export const Dashboard = () => {
               {activeTab === 'wishlist' && (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-stone-900">My Wishlist</h2>
-                    <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-600">{wishlist.length} Items</span>
+                    <h2 className="text-xl font-bold text-stone-900 dark:text-white">My Wishlist</h2>
+                    <span className="rounded-full bg-stone-100 dark:bg-slate-800 px-3 py-1 text-xs font-bold text-stone-600 dark:text-slate-400">{wishlist.length} Items</span>
                   </div>
 
                   {wishlist.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                      <div className="mb-4 rounded-full bg-stone-50 p-4">
-                        <Heart className="h-8 w-8 text-stone-300" />
+                      <div className="mb-4 rounded-full bg-stone-50 dark:bg-slate-950 p-4">
+                        <Heart className="h-8 w-8 text-stone-300 dark:text-slate-700" />
                       </div>
-                      <p className="text-stone-500">Your wishlist is empty.</p>
-                      <button className="mt-4 font-bold text-emerald-600 hover:underline">Browse Products</button>
+                      <p className="text-stone-500 dark:text-slate-400">Your wishlist is empty.</p>
+                      <button className="mt-4 font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Browse Products</button>
                     </div>
                   ) : (
                     <div className="grid gap-4 sm:grid-cols-2">
                       {wishlist.map((item) => (
-                        <div key={item.id} className="group relative flex items-center gap-4 rounded-2xl border border-stone-100 p-4 transition-all hover:bg-stone-50">
-                          <div className="h-16 w-16 overflow-hidden rounded-xl bg-stone-100">
+                        <div key={item.id} className="group relative flex items-center gap-4 rounded-2xl border border-stone-100 dark:border-slate-800 p-4 transition-all hover:bg-stone-50 dark:hover:bg-slate-950">
+                          <div className="h-16 w-16 overflow-hidden rounded-xl bg-stone-100 dark:bg-slate-800">
                             <img src={`https://picsum.photos/seed/${item.productId}/200/200`} alt="Product" className="h-full w-full object-cover" referrerPolicy="no-referrer" />
                           </div>
                           <div className="flex-1">
-                            <p className="text-sm font-bold text-stone-900">Gift Item {item.productId.slice(0, 4)}</p>
-                            <p className="text-xs text-stone-500">Added on {new Date(item.addedAt?.toDate()).toLocaleDateString()}</p>
+                            <p className="text-sm font-bold text-stone-900 dark:text-white">Gift Item {item.productId.slice(0, 4)}</p>
+                            <p className="text-xs text-stone-500 dark:text-slate-400">Added on {new Date(item.addedAt?.toDate()).toLocaleDateString()}</p>
                           </div>
-                          <button className="rounded-lg p-2 text-stone-300 transition-colors hover:bg-rose-50 hover:text-rose-500">
+                          <button className="rounded-lg p-2 text-stone-300 dark:text-slate-600 transition-colors hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-500 dark:hover:text-rose-400">
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
@@ -339,8 +339,8 @@ export const Dashboard = () => {
               {activeTab === 'addresses' && (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-stone-900">Saved Addresses</h2>
-                    <button className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-emerald-200 transition-all hover:bg-emerald-700 hover:shadow-none">
+                    <h2 className="text-xl font-bold text-stone-900 dark:text-white">Saved Addresses</h2>
+                    <button className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none transition-all hover:bg-emerald-700 hover:shadow-none">
                       <Plus className="h-4 w-4" />
                       Add New
                     </button>
@@ -348,30 +348,30 @@ export const Dashboard = () => {
 
                   {!userProfile?.addresses || userProfile.addresses.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                      <div className="mb-4 rounded-full bg-stone-50 p-4">
-                        <MapPin className="h-8 w-8 text-stone-300" />
+                      <div className="mb-4 rounded-full bg-stone-50 dark:bg-slate-950 p-4">
+                        <MapPin className="h-8 w-8 text-stone-300 dark:text-slate-700" />
                       </div>
-                      <p className="text-stone-500">You haven't saved any addresses yet.</p>
+                      <p className="text-stone-500 dark:text-slate-400">You haven't saved any addresses yet.</p>
                     </div>
                   ) : (
                     <div className="grid gap-4 sm:grid-cols-2">
                       {userProfile.addresses.map((address: Address) => (
-                        <div key={address.id} className={`relative rounded-2xl border p-6 transition-all ${address.isDefault ? 'border-emerald-600 bg-emerald-50/30' : 'border-stone-100 hover:bg-stone-50'}`}>
+                        <div key={address.id} className={`relative rounded-2xl border p-6 transition-all ${address.isDefault ? 'border-emerald-600 bg-emerald-50/30 dark:bg-emerald-900/10' : 'border-stone-100 dark:border-slate-800 hover:bg-stone-50 dark:hover:bg-slate-950'}`}>
                           {address.isDefault && (
                             <span className="absolute right-4 top-4 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">Default</span>
                           )}
-                          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-stone-400">{address.label}</p>
-                          <p className="font-bold text-stone-900">{address.fullName}</p>
-                          <p className="mt-2 text-sm text-stone-600">{address.street}</p>
-                          <p className="text-sm text-stone-600">{address.city}, {address.state} {address.zipCode}</p>
-                          <p className="text-sm text-stone-600">{address.country}</p>
+                          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">{address.label}</p>
+                          <p className="font-bold text-stone-900 dark:text-white">{address.fullName}</p>
+                          <p className="mt-2 text-sm text-stone-600 dark:text-slate-300">{address.street}</p>
+                          <p className="text-sm text-stone-600 dark:text-slate-300">{address.city}, {address.state} {address.zipCode}</p>
+                          <p className="text-sm text-stone-600 dark:text-slate-300">{address.country}</p>
                           
                           <div className="mt-6 flex items-center gap-3">
-                            <button className="flex items-center gap-1 text-xs font-bold text-stone-400 hover:text-stone-900">
+                            <button className="flex items-center gap-1 text-xs font-bold text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white">
                               <Edit2 className="h-3 w-3" />
                               Edit
                             </button>
-                            <button className="flex items-center gap-1 text-xs font-bold text-stone-400 hover:text-rose-500">
+                            <button className="flex items-center gap-1 text-xs font-bold text-stone-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400">
                               <Trash2 className="h-3 w-3" />
                               Delete
                             </button>

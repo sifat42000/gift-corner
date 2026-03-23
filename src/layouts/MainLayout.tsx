@@ -11,12 +11,12 @@ export const MainLayout = () => {
   const location = useLocation();
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-stone-900">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950 font-sans text-stone-900 dark:text-white transition-colors duration-300">
       <ScrollToTop />
       <Toaster 
         position="top-center"
         toastOptions={{
-          className: 'rounded-2xl border border-stone-100 bg-white p-4 text-sm font-medium text-stone-900 shadow-xl',
+          className: 'rounded-2xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-sm font-medium text-stone-900 dark:text-white shadow-xl',
           duration: 3000,
         }}
       />

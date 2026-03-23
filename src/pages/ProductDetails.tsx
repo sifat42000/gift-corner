@@ -113,36 +113,36 @@ export const ProductDetails = () => {
   if (loading) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 animate-pulse">
-        <div className="mb-8 h-6 w-48 rounded bg-stone-100" />
+        <div className="mb-8 h-6 w-48 rounded bg-stone-100 dark:bg-slate-800" />
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div className="aspect-square rounded-3xl bg-stone-100" />
+          <div className="aspect-square rounded-3xl bg-stone-100 dark:bg-slate-800" />
           <div className="space-y-6">
-            <div className="h-10 w-3/4 rounded bg-stone-100" />
-            <div className="h-6 w-1/4 rounded bg-stone-100" />
-            <div className="h-24 w-full rounded bg-stone-100" />
-            <div className="h-12 w-1/2 rounded bg-stone-100" />
+            <div className="h-10 w-3/4 rounded bg-stone-100 dark:bg-slate-800" />
+            <div className="h-6 w-1/4 rounded bg-stone-100 dark:bg-slate-800" />
+            <div className="h-24 w-full rounded bg-stone-100 dark:bg-slate-800" />
+            <div className="h-12 w-1/2 rounded bg-stone-100 dark:bg-slate-800" />
           </div>
         </div>
       </div>
     );
   }
 
-  if (!product) return <div className="p-20 text-center">Product not found.</div>;
+  if (!product) return <div className="p-20 text-center dark:text-slate-400">Product not found.</div>;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Breadcrumbs & Back Button */}
       <div className="mb-8 flex items-center justify-between">
-        <nav className="hidden items-center gap-2 text-sm text-stone-500 sm:flex">
-          <Link to="/" className="hover:text-emerald-600">Home</Link>
+        <nav className="hidden items-center gap-2 text-sm text-stone-500 dark:text-slate-400 sm:flex">
+          <Link to="/" className="hover:text-emerald-600 dark:hover:text-emerald-400">Home</Link>
           <ChevronRight className="h-4 w-4" />
-          <Link to="/categories" className="hover:text-emerald-600">Categories</Link>
+          <Link to="/categories" className="hover:text-emerald-600 dark:hover:text-emerald-400">Categories</Link>
           <ChevronRight className="h-4 w-4" />
-          <span className="font-medium text-stone-900 truncate">{product.name}</span>
+          <span className="font-medium text-stone-900 dark:text-white truncate">{product.name}</span>
         </nav>
         <button 
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-bold text-stone-600 hover:text-stone-900 sm:hidden"
+          className="flex items-center gap-2 text-sm font-bold text-stone-600 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white sm:hidden"
         >
           <ChevronLeft className="h-5 w-5" />
           Back
@@ -152,7 +152,7 @@ export const ProductDetails = () => {
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
         {/* Image Gallery */}
         <div className="space-y-4">
-          <div className="relative aspect-square overflow-hidden rounded-3xl bg-stone-100">
+          <div className="relative aspect-square overflow-hidden rounded-3xl bg-stone-100 dark:bg-slate-800">
             <motion.img 
               key={activeImage}
               initial={{ opacity: 0 }}
@@ -174,7 +174,7 @@ export const ProductDetails = () => {
                 key={idx}
                 onClick={() => setActiveImage(img)}
                 className={`relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border-2 transition-all snap-start ${
-                  activeImage === img ? 'border-emerald-600' : 'border-transparent opacity-60 hover:opacity-100'
+                  activeImage === img ? 'border-emerald-600' : 'border-transparent opacity-60 hover:opacity-100 dark:border-slate-800'
                 }`}
               >
                 <img src={img} alt="" className="h-full w-full object-cover" referrerPolicy="no-referrer" />
@@ -186,55 +186,55 @@ export const ProductDetails = () => {
         {/* Product Info */}
         <div className="flex flex-col">
           <div className="mb-6 flex items-center justify-between">
-            <span className="rounded-full bg-stone-100 px-4 py-1 text-xs font-bold uppercase tracking-widest text-stone-500">
+            <span className="rounded-full bg-stone-100 dark:bg-slate-800 px-4 py-1 text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-slate-400">
               {product.category}
             </span>
             <div className="flex gap-2">
               <button 
                 onClick={toggleWishlist}
                 className={`rounded-full p-2.5 shadow-sm transition-all ${
-                  isWishlisted ? 'bg-rose-500 text-white' : 'bg-white text-stone-400 hover:text-rose-500'
+                  isWishlisted ? 'bg-rose-500 text-white' : 'bg-white dark:bg-slate-800 text-stone-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400'
                 }`}
               >
                 <Heart className={`h-5 w-5 ${isWishlisted ? 'fill-current' : ''}`} />
               </button>
-              <button className="rounded-full bg-white p-2.5 text-stone-400 shadow-sm transition-all hover:text-emerald-600">
+              <button className="rounded-full bg-white dark:bg-slate-800 p-2.5 text-stone-400 dark:text-slate-500 shadow-sm transition-all hover:text-emerald-600 dark:hover:text-emerald-400">
                 <Share2 className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <h1 className="mb-4 text-3xl font-bold text-stone-900 md:text-4xl">{product.name}</h1>
+          <h1 className="mb-4 text-3xl font-bold text-stone-900 dark:text-white md:text-4xl">{product.name}</h1>
           
           <div className="mb-8 flex items-center gap-4">
             <div className="flex items-center gap-1 text-amber-500">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.rating || 4.9) ? 'fill-current' : 'text-stone-200'}`} />
+                <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.rating || 4.9) ? 'fill-current' : 'text-stone-200 dark:text-slate-700'}`} />
               ))}
-              <span className="ml-2 text-sm font-bold text-stone-900">{product.rating || '4.9'}</span>
+              <span className="ml-2 text-sm font-bold text-stone-900 dark:text-white">{product.rating || '4.9'}</span>
             </div>
-            <span className="h-4 w-px bg-stone-200" />
-            <span className="text-sm text-stone-500">128 Reviews</span>
+            <span className="h-4 w-px bg-stone-200 dark:bg-slate-800" />
+            <span className="text-sm text-stone-500 dark:text-slate-400">128 Reviews</span>
           </div>
 
           <div className="mb-8">
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-emerald-600">${discountedPrice.toFixed(2)}</span>
+              <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">${discountedPrice.toFixed(2)}</span>
               {product.discount && (
-                <span className="text-lg text-stone-400 line-through">${product.price.toFixed(2)}</span>
+                <span className="text-lg text-stone-400 dark:text-slate-600 line-through">${product.price.toFixed(2)}</span>
               )}
             </div>
-            <p className="mt-2 text-sm text-stone-500">Inclusive of all taxes</p>
+            <p className="mt-2 text-sm text-stone-500 dark:text-slate-400">Inclusive of all taxes</p>
           </div>
 
-          <p className="mb-8 text-stone-600 leading-relaxed">
+          <p className="mb-8 text-stone-600 dark:text-slate-300 leading-relaxed">
             {product.description}
           </p>
 
           {/* Variants */}
           {product.variants && (
             <div className="mb-8 space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900">Select Variant</h3>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-white">Select Variant</h3>
               <div className="flex flex-wrap gap-3">
                 {product.variants.map((v) => (
                   <button
@@ -242,8 +242,8 @@ export const ProductDetails = () => {
                     onClick={() => setSelectedVariant(v)}
                     className={`rounded-xl border-2 px-6 py-3 text-sm font-bold transition-all ${
                       selectedVariant === v
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                        : 'border-stone-100 bg-white text-stone-600 hover:border-stone-200'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800'
+                        : 'border-stone-100 bg-white text-stone-600 hover:border-stone-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-700'
                     }`}
                   >
                     {v}
@@ -255,24 +255,24 @@ export const ProductDetails = () => {
 
           {/* Actions */}
           <div className="mb-10 flex flex-col gap-4 sm:flex-row">
-            <div className="flex items-center rounded-xl border-2 border-stone-100 bg-white px-2">
+            <div className="flex items-center rounded-xl border-2 border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-2">
               <button 
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="p-3 text-stone-400 hover:text-stone-900"
+                className="p-3 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white"
               >
                 <Minus className="h-4 w-4" />
               </button>
-              <span className="w-12 text-center font-bold text-stone-900">{quantity}</span>
+              <span className="w-12 text-center font-bold text-stone-900 dark:text-white">{quantity}</span>
               <button 
                 onClick={() => setQuantity(quantity + 1)}
-                className="p-3 text-stone-400 hover:text-stone-900"
+                className="p-3 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white"
               >
                 <Plus className="h-4 w-4" />
               </button>
             </div>
             <button 
               onClick={handleAddToCart}
-              className="flex flex-1 items-center justify-center gap-3 rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-200 transition-all hover:bg-emerald-700 hover:shadow-none"
+              className="flex flex-1 items-center justify-center gap-3 rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none transition-all hover:bg-emerald-700 hover:shadow-none"
             >
               <ShoppingBag className="h-5 w-5" />
               Add to Cart
@@ -280,39 +280,39 @@ export const ProductDetails = () => {
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 gap-4 rounded-2xl bg-stone-50 p-6 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 rounded-2xl bg-stone-50 dark:bg-slate-900/50 p-6 sm:grid-cols-3">
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-white p-2 text-emerald-600 shadow-sm">
+              <div className="rounded-full bg-white dark:bg-slate-800 p-2 text-emerald-600 dark:text-emerald-400 shadow-sm">
                 <Truck className="h-4 w-4" />
               </div>
-              <span className="text-xs font-bold text-stone-700">Free Shipping</span>
+              <span className="text-xs font-bold text-stone-700 dark:text-slate-300">Free Shipping</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-white p-2 text-emerald-600 shadow-sm">
+              <div className="rounded-full bg-white dark:bg-slate-800 p-2 text-emerald-600 dark:text-emerald-400 shadow-sm">
                 <ShieldCheck className="h-4 w-4" />
               </div>
-              <span className="text-xs font-bold text-stone-700">Secure Payment</span>
+              <span className="text-xs font-bold text-stone-700 dark:text-slate-300">Secure Payment</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-white p-2 text-emerald-600 shadow-sm">
+              <div className="rounded-full bg-white dark:bg-slate-800 p-2 text-emerald-600 dark:text-emerald-400 shadow-sm">
                 <RotateCcw className="h-4 w-4" />
               </div>
-              <span className="text-xs font-bold text-stone-700">Easy Returns</span>
+              <span className="text-xs font-bold text-stone-700 dark:text-slate-300">Easy Returns</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Sticky Mobile Footer */}
-      <div className="fixed bottom-0 left-0 z-40 w-full border-t border-stone-100 bg-white/80 p-4 backdrop-blur-lg lg:hidden">
+      <div className="fixed bottom-0 left-0 z-40 w-full border-t border-stone-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 p-4 backdrop-blur-lg lg:hidden">
         <div className="flex items-center gap-4">
           <div className="flex-1">
-            <p className="text-xs font-medium text-stone-500">Total Price</p>
-            <p className="text-lg font-bold text-stone-900">${(discountedPrice * quantity).toFixed(2)}</p>
+            <p className="text-xs font-medium text-stone-500 dark:text-slate-400">Total Price</p>
+            <p className="text-lg font-bold text-stone-900 dark:text-white">${(discountedPrice * quantity).toFixed(2)}</p>
           </div>
           <button 
             onClick={handleAddToCart}
-            className="flex flex-[2] items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200"
+            className="flex flex-[2] items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none"
           >
             <ShoppingBag className="h-4 w-4" />
             Add to Cart
@@ -323,8 +323,8 @@ export const ProductDetails = () => {
       {/* Reviews Section */}
       <section className="mt-24">
         <div className="mb-12 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-stone-900 md:text-3xl">Customer Reviews</h2>
-          <button className="text-sm font-bold text-emerald-600 hover:underline">Write a Review</button>
+          <h2 className="text-2xl font-bold text-stone-900 dark:text-white md:text-3xl">Customer Reviews</h2>
+          <button className="text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:underline">Write a Review</button>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {REVIEWS.map((review, idx) => (
@@ -336,8 +336,8 @@ export const ProductDetails = () => {
       {/* Related Products */}
       <section className="mt-24">
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-stone-900 md:text-3xl">You May Also Like</h2>
-          <p className="mt-2 text-stone-500">Handpicked items that complement your choice.</p>
+          <h2 className="text-2xl font-bold text-stone-900 dark:text-white md:text-3xl">You May Also Like</h2>
+          <p className="mt-2 text-stone-500 dark:text-slate-400">Handpicked items that complement your choice.</p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {RELATED_PRODUCTS.map((p) => (

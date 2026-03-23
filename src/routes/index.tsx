@@ -18,7 +18,7 @@ const Deals = lazy(() => import('../pages/Deals').then(m => ({ default: m.Deals 
 
 const PageLoader = () => (
   <div className="flex h-[60vh] items-center justify-center">
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-stone-100 border-t-emerald-600"></div>
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-stone-100 dark:border-slate-800 border-t-emerald-600 dark:border-t-emerald-400"></div>
   </div>
 );
 

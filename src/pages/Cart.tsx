@@ -47,11 +47,11 @@ export const Cart = () => {
   if (cart.length === 0) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-        <div className="mb-6 rounded-full bg-stone-50 p-8">
-          <ShoppingBag className="h-12 w-12 text-stone-300" />
+        <div className="mb-6 rounded-full bg-stone-50 dark:bg-slate-900 p-8">
+          <ShoppingBag className="h-12 w-12 text-stone-300 dark:text-slate-700" />
         </div>
-        <h2 className="mb-2 text-2xl font-bold text-stone-900">Your cart is empty</h2>
-        <p className="mb-8 text-stone-500">Looks like you haven't added any gifts yet.</p>
+        <h2 className="mb-2 text-2xl font-bold text-stone-900 dark:text-white">Your cart is empty</h2>
+        <p className="mb-8 text-stone-500 dark:text-slate-400">Looks like you haven't added any gifts yet.</p>
         <Link 
           to="/categories" 
           className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-emerald-700 active:scale-95"
@@ -65,18 +65,18 @@ export const Cart = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-stone-900 md:text-3xl">Shopping Cart</h1>
-        <span className="text-sm font-medium text-stone-500">{cart.length} Items</span>
+        <h1 className="text-2xl font-bold text-stone-900 dark:text-white md:text-3xl">Shopping Cart</h1>
+        <span className="text-sm font-medium text-stone-500 dark:text-slate-400">{cart.length} Items</span>
       </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="hidden border-b border-stone-100 pb-4 md:grid md:grid-cols-12 md:gap-4">
-            <div className="md:col-span-6 text-xs font-bold uppercase tracking-widest text-stone-400">Product</div>
-            <div className="md:col-span-2 text-center text-xs font-bold uppercase tracking-widest text-stone-400">Quantity</div>
-            <div className="md:col-span-2 text-center text-xs font-bold uppercase tracking-widest text-stone-400">Price</div>
-            <div className="md:col-span-2 text-right text-xs font-bold uppercase tracking-widest text-stone-400">Total</div>
+          <div className="hidden border-b border-stone-100 dark:border-slate-800 pb-4 md:grid md:grid-cols-12 md:gap-4">
+            <div className="md:col-span-6 text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Product</div>
+            <div className="md:col-span-2 text-center text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Quantity</div>
+            <div className="md:col-span-2 text-center text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Price</div>
+            <div className="md:col-span-2 text-right text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">Total</div>
           </div>
 
           <div className="space-y-6">
@@ -93,11 +93,11 @@ export const Cart = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="grid grid-cols-1 gap-4 rounded-2xl border border-stone-100 bg-white p-4 transition-shadow hover:shadow-md md:grid-cols-12 md:items-center md:gap-4 md:border-none md:p-0 md:bg-transparent md:hover:shadow-none"
+                    className="grid grid-cols-1 gap-4 rounded-2xl border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 transition-shadow hover:shadow-md md:grid-cols-12 md:items-center md:gap-4 md:border-none md:p-0 md:bg-transparent md:hover:shadow-none"
                   >
                     {/* Product Info */}
                     <div className="flex items-center gap-4 md:col-span-6">
-                      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-stone-100 md:h-24 md:w-24">
+                      <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-stone-100 dark:bg-slate-800 md:h-24 md:w-24">
                         <img 
                           src={item.image} 
                           alt={item.name} 
@@ -107,9 +107,9 @@ export const Cart = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <Link to={`/product/${item.id}`} className="block">
-                          <h3 className="truncate font-bold text-stone-900 hover:text-emerald-600 transition-colors">{item.name}</h3>
+                          <h3 className="truncate font-bold text-stone-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">{item.name}</h3>
                         </Link>
-                        <p className="text-xs text-stone-500">{item.category}</p>
+                        <p className="text-xs text-stone-500 dark:text-slate-400">{item.category}</p>
                         <button 
                           onClick={() => handleRemove(item.id, item.name)}
                           className="mt-2 flex items-center gap-1 text-xs font-bold text-rose-500 hover:text-rose-600 md:hidden"
@@ -121,19 +121,19 @@ export const Cart = () => {
 
                     {/* Quantity */}
                     <div className="flex items-center justify-between md:col-span-2 md:justify-center">
-                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 md:hidden">Quantity</span>
-                      <div className="flex items-center rounded-lg border border-stone-100 bg-white p-1">
+                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500 md:hidden">Quantity</span>
+                      <div className="flex items-center rounded-lg border border-stone-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-1">
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-1.5 text-stone-400 hover:text-stone-900 disabled:opacity-30"
+                          className="p-1.5 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white disabled:opacity-30"
                           disabled={item.quantity <= 1}
                         >
                           <Minus className="h-3.5 w-3.5" />
                         </button>
-                        <span className="w-8 text-center text-sm font-bold text-stone-900">{item.quantity}</span>
+                        <span className="w-8 text-center text-sm font-bold text-stone-900 dark:text-white">{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-1.5 text-stone-400 hover:text-stone-900"
+                          className="p-1.5 text-stone-400 dark:text-slate-500 hover:text-stone-900 dark:hover:text-white"
                         >
                           <Plus className="h-3.5 w-3.5" />
                         </button>
@@ -142,18 +142,18 @@ export const Cart = () => {
 
                     {/* Price */}
                     <div className="flex items-center justify-between md:col-span-2 md:justify-center">
-                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 md:hidden">Price</span>
-                      <span className="font-medium text-stone-600">${itemPrice.toFixed(2)}</span>
+                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500 md:hidden">Price</span>
+                      <span className="font-medium text-stone-600 dark:text-slate-300">${itemPrice.toFixed(2)}</span>
                     </div>
 
                     {/* Total & Remove Desktop */}
                     <div className="flex items-center justify-between md:col-span-2 md:justify-end">
-                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 md:hidden">Total</span>
+                      <span className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500 md:hidden">Total</span>
                       <div className="flex items-center gap-4">
-                        <span className="font-bold text-stone-900">${(itemPrice * item.quantity).toFixed(2)}</span>
+                        <span className="font-bold text-stone-900 dark:text-white">${(itemPrice * item.quantity).toFixed(2)}</span>
                         <button 
                           onClick={() => handleRemove(item.id, item.name)}
-                          className="hidden rounded-full p-2 text-stone-300 transition-colors hover:bg-rose-50 hover:text-rose-500 md:block"
+                          className="hidden rounded-full p-2 text-stone-300 dark:text-slate-600 transition-colors hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-500 dark:hover:text-rose-400 md:block"
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>
@@ -168,7 +168,7 @@ export const Cart = () => {
           {/* Continue Shopping */}
           <Link 
             to="/categories" 
-            className="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
           >
             <ChevronLeft className="h-4 w-4" /> Continue Shopping
           </Link>
@@ -176,26 +176,26 @@ export const Cart = () => {
 
         {/* Order Summary */}
         <div className="space-y-6">
-          <div className="rounded-3xl bg-stone-50 p-6 md:p-8">
-            <h2 className="mb-6 text-xl font-bold text-stone-900">Order Summary</h2>
+          <div className="rounded-3xl bg-stone-50 dark:bg-slate-900 p-6 md:p-8">
+            <h2 className="mb-6 text-xl font-bold text-stone-900 dark:text-white">Order Summary</h2>
             
             <div className="space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="text-stone-500">Subtotal</span>
-                <span className="font-bold text-stone-900">${totalPrice.toFixed(2)}</span>
+                <span className="text-stone-500 dark:text-slate-400">Subtotal</span>
+                <span className="font-bold text-stone-900 dark:text-white">${totalPrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-stone-500">Shipping</span>
-                <span className="font-bold text-stone-900">
+                <span className="text-stone-500 dark:text-slate-400">Shipping</span>
+                <span className="font-bold text-stone-900 dark:text-white">
                   {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-stone-500">Estimated Tax</span>
-                <span className="font-bold text-stone-900">${tax.toFixed(2)}</span>
+                <span className="text-stone-500 dark:text-slate-400">Estimated Tax</span>
+                <span className="font-bold text-stone-900 dark:text-white">${tax.toFixed(2)}</span>
               </div>
               {isCouponApplied && (
-                <div className="flex justify-between text-sm text-emerald-600">
+                <div className="flex justify-between text-sm text-emerald-600 dark:text-emerald-400">
                   <span className="flex items-center gap-1">
                     <Tag className="h-3.5 w-3.5" /> Discount (10%)
                   </span>
@@ -203,17 +203,17 @@ export const Cart = () => {
                 </div>
               )}
               
-              <div className="my-6 h-px bg-stone-200" />
+              <div className="my-6 h-px bg-stone-200 dark:bg-slate-800" />
               
               <div className="flex justify-between text-lg font-bold">
-                <span className="text-stone-900">Total</span>
-                <span className="text-emerald-600">${finalTotal.toFixed(2)}</span>
+                <span className="text-stone-900 dark:text-white">Total</span>
+                <span className="text-emerald-600 dark:text-emerald-400">${finalTotal.toFixed(2)}</span>
               </div>
             </div>
 
             {/* Coupon Input */}
             <form onSubmit={handleApplyCoupon} className="mt-8">
-              <label className="mb-2 block text-xs font-bold uppercase tracking-widest text-stone-400">
+              <label className="mb-2 block text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-slate-500">
                 Promo Code
               </label>
               <div className="flex gap-2">
@@ -222,13 +222,13 @@ export const Cart = () => {
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   placeholder="GIFT10"
-                  className="w-full rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm focus:border-emerald-600 focus:outline-none"
+                  className="w-full rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-2 text-sm focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none dark:text-white"
                   disabled={isCouponApplied}
                 />
                 <button 
                   type="submit"
                   disabled={isCouponApplied || !couponCode}
-                  className="rounded-xl bg-stone-900 px-4 py-2 text-xs font-bold text-white transition-all hover:bg-stone-800 disabled:opacity-50"
+                  className="rounded-xl bg-stone-900 dark:bg-emerald-600 px-4 py-2 text-xs font-bold text-white transition-all hover:bg-stone-800 dark:hover:bg-emerald-700 disabled:opacity-50"
                 >
                   {isCouponApplied ? 'Applied' : 'Apply'}
                 </button>
@@ -237,30 +237,30 @@ export const Cart = () => {
 
             <Link 
               to="/checkout"
-              className="mt-8 block w-full rounded-2xl bg-emerald-600 py-4 text-center text-sm font-bold text-white shadow-lg shadow-emerald-200 transition-all hover:bg-emerald-700 hover:shadow-none active:scale-95"
+              className="mt-8 block w-full rounded-2xl bg-emerald-600 py-4 text-center text-sm font-bold text-white shadow-lg shadow-emerald-200 dark:shadow-none transition-all hover:bg-emerald-700 hover:shadow-none active:scale-95"
             >
               Checkout Now
             </Link>
 
-            <div className="mt-6 flex items-center justify-center gap-4 text-stone-400">
+            <div className="mt-6 flex items-center justify-center gap-4 text-stone-400 dark:text-slate-500">
               <Gift className="h-5 w-5" />
               <span className="text-xs font-medium">Add a gift message at checkout</span>
             </div>
           </div>
 
           {/* Trust Info */}
-          <div className="rounded-2xl border border-stone-100 p-6 space-y-4">
+          <div className="rounded-2xl border border-stone-100 dark:border-slate-800 p-6 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-emerald-50 p-2 text-emerald-600">
+              <div className="rounded-full bg-emerald-50 dark:bg-emerald-900/20 p-2 text-emerald-600 dark:text-emerald-400">
                 <ArrowRight className="h-4 w-4" />
               </div>
-              <p className="text-xs font-medium text-stone-600">Free shipping on orders over $100</p>
+              <p className="text-xs font-medium text-stone-600 dark:text-slate-400">Free shipping on orders over $100</p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="rounded-full bg-emerald-50 p-2 text-emerald-600">
+              <div className="rounded-full bg-emerald-50 dark:bg-emerald-900/20 p-2 text-emerald-600 dark:text-emerald-400">
                 <ArrowRight className="h-4 w-4" />
               </div>
-              <p className="text-xs font-medium text-stone-600">30-day easy return policy</p>
+              <p className="text-xs font-medium text-stone-600 dark:text-slate-400">30-day easy return policy</p>
             </div>
           </div>
         </div>

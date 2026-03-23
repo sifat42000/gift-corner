@@ -5,6 +5,8 @@ export interface Product {
   price: number;
   image: string;
   category: string;
+  occasion?: string;
+  gender?: string;
   discount?: number;
   rating?: number;
   images?: string[];
